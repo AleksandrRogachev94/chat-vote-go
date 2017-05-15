@@ -20,8 +20,6 @@ class ApplicationController < ActionController::API
     def authenticate!
       raise NotAuthenticatedError unless auth_token
       user = Auth.decode(auth_token)
-      puts "-------->"
-      puts user.inspect
       @current_user = User.find(user[:user_id])
 
       rescue JWT::ExpiredSignature
