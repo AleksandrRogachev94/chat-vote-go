@@ -1,5 +1,5 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :authenticate!, only: [:test]
+  before_action :authenticate!, only: [:test, :show]
 
   def signup
     user = User.new(user_params)
@@ -7,6 +7,15 @@ class Api::V1::UsersController < ApplicationController
       render json: user, status: :created
     else
       render json: { errors: user.errors.messages }, status: :unprocessable_entity
+    end
+  end
+
+  def show
+    user = User.find_by(id: params[:id])
+    if user
+      render json: user, status: :ok
+    else
+      render json: { errors: { other: ["This user does not exist"] } }, status: :not_found
     end
   end
 

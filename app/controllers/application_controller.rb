@@ -20,7 +20,7 @@ class ApplicationController < ActionController::API
     def authenticate!
       raise NotAuthenticatedError unless auth_token
       user = Auth.decode(auth_token)
-      @current_user = User.find(user[:user_id])
+      @current_user = User.find(user[:id])
 
       rescue JWT::ExpiredSignature
         raise AuthenticationTimeoutError
@@ -31,18 +31,19 @@ class ApplicationController < ActionController::API
   private
 
     def auth_token
+      # puts request.headers['authorization']
       if request.headers['Authorization'].present?
         @auth_token ||= request.headers['Authorization'].split(' ').last
       end
     end
 
     def authentication_timeout
-      render json: { errors: ['Authentication Timeout'] }, status: :anauthorized
+      render json: { errors: { auth: ['Authentication Timeout'] } }, status: :anauthorized
     end
     def forbidden_resource
-      render json: { errors: ['Not Authorized To Access Resource'] }, status: :forbidden
+      render json: { errors: { auth: ['Not Authorized To Access Resource'] } }, status: :forbidden
     end
     def user_not_authenticated
-      render json: { errors: ['Not authenticated'] }, status: :unauthorized
+      render json: { errors: { auth: ['Not authenticated'] } }, status: :unauthorized
     end
 end
