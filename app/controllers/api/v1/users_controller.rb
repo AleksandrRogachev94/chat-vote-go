@@ -1,13 +1,18 @@
 class Api::V1::UsersController < ApplicationController
-  before_action :authenticate!, only: [:test, :show]
+  before_action :authenticate!, only: [:index, :show]
 
   def signup
     user = User.new(user_params)
     if user.save
-      render json: user, status: :created
+      jwt = Auth.issue({ id: user.id, email: user.email })
+      render json: { jwt: jwt }, status: :created
     else
       render json: { errors: user.errors.messages }, status: :unprocessable_entity
     end
+  end
+
+  def index
+    render json: User.all
   end
 
   def show
@@ -17,10 +22,6 @@ class Api::V1::UsersController < ApplicationController
     else
       render json: { errors: { other: ["This user does not exist"] } }, status: :not_found
     end
-  end
-
-  def test
-    render json: { message: "You're in business!!!", user: current_user }
   end
 
   private
