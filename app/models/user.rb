@@ -1,6 +1,11 @@
 class User < ApplicationRecord
   has_secure_password
 
+  has_many :own_chatrooms, class_name: Chatroom, dependent: :destroy
+
+  has_many :user_chatrooms
+  has_many :guest_chatrooms, through: :user_chatrooms, source: :chatroom
+
   has_attached_file :avatar, default_url: ':style/default_avatar.jpg', styles: { thumb: "100x100>" }
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
   validates_with AttachmentSizeValidator, attributes: :avatar, less_than: 2.megabytes
