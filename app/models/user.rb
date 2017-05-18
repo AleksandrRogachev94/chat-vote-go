@@ -1,5 +1,16 @@
 class User < ApplicationRecord
   has_secure_password
 
-  validates :email, presence: true, uniqueness: true
+  has_attached_file :avatar, default_url: ':style/default_avatar.jpg', styles: { thumb: "100x100>" }
+  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
+  validates_with AttachmentSizeValidator, attributes: :avatar, less_than: 2.megabytes
+
+  before_save :capitalize_name
+
+  validates :email, :nickname, presence: true, uniqueness: true
+
+  def capitalize_name
+    self.first_name.capitalize! if self.first_name
+    self.last_name.capitalize! if self.last_name
+  end
 end

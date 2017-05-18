@@ -4,7 +4,7 @@ class Api::V1::UsersController < ApplicationController
   def signup
     user = User.new(user_params)
     if user.save
-      jwt = Auth.issue({ id: user.id, email: user.email })
+      jwt = Auth.issue({ id: user.id, nickname: user.nickname })
       render json: { jwt: jwt }, status: :created
     else
       render json: { errors: user.errors.messages }, status: :unprocessable_entity
@@ -12,13 +12,13 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def index
-    render json: User.all
+    render json: User.all, each_serializer: UserBasicSerializer
   end
 
   def show
     user = User.find_by(id: params[:id])
     if user
-      render json: user, status: :ok
+      render json: user, serializer: UserProfileSerializer, status: :ok
     else
       render json: { errors: { other: ["This user does not exist"] } }, status: :not_found
     end
@@ -27,6 +27,8 @@ class Api::V1::UsersController < ApplicationController
   private
 
     def user_params
-      params.require(:user).permit(:email, :password, :password_confirmation)
+      params.require(:user).permit(
+        :email, :nickname, :password, :password_confirmation, :avatar, :first_name, :last_name
+      )
     end
 end
