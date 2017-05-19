@@ -1,8 +1,12 @@
 class UserProfileSerializer < ActiveModel::Serializer
-  attributes :id, :email, :nickname, :first_name, :last_name, :created_at, :avatar_url
+  attributes :id, :email, :nickname, :first_name, :last_name, :created_at, :avatar_original_url, :avatar_thumb_url
 
-  def avatar_url
+  def avatar_original_url
     ActionController::Base.helpers.asset_url(object.avatar.url(:original))
+  end
+
+  def avatar_thumb_url
+    ActionController::Base.helpers.asset_url(object.avatar.url(:thumb))
   end
 
   def created_at

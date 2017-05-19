@@ -8,15 +8,16 @@ class Api::V1::ChatroomsController < ApplicationController
     when "guest"
       render json: current_user.guest_chatrooms, each_serializer: ChatroomBasicSerializer, status: :ok
     else
-      render json: { errors: { other: ["Incorrect query"] } }
+      render json: { errors: { other: ["Incorrect query"] } }, status: :bad_request
     end
   end
 
   def show
     chatroom = Chatroom.find_by(id: params[:id])
-    return render json: { errors: { other: ["This chatroom doesn't exist"] } } if !chatroom
+    return render json: { errors: { other: ["This chatroom doesn't exist"] } },
+      status: :not_found if !chatroom
     if chatroom.owner != current_user && !chatroom.guests.include?(current_user)
-      return render json: { errors: { other: ["Not Authorized"] } }
+      forbidden_resource
     end
 
     render json: chatroom, serializer: ChatroomSerializer, status: :ok
