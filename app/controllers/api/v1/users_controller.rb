@@ -12,7 +12,7 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def index
-    render json: User.all, each_serializer: UserBasicSerializer
+    render json: User.all, each_serializer: UserBasicSerializer, status: :ok
   end
 
   def show

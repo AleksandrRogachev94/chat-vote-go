@@ -16,3 +16,11 @@ UserChatroom.create(chatroom: Chatroom.first, user: User.all[2])
 
 Message.create(chatroom: Chatroom.first, user: User.all[0], content: "What do you think?")
 Message.create(chatroom: Chatroom.first, user: User.all[1], content: "Sure!")
+
+Chatroom.create(owner: User.all[1], title: "Choosing theater for friday")
+
+UserChatroom.create(chatroom: Chatroom.last, user: User.all[0])
+UserChatroom.create(chatroom: Chatroom.last, user: User.all[2])
+
+Message.create(chatroom: Chatroom.last, user: User.all[1], content: "Hey guys how are you?")
+Message.create(chatroom: Chatroom.last, user: User.all[0], content: "Good! You?")
