@@ -6,6 +6,8 @@ class Api::V1::MessagesController < ApplicationController
     return render json: { errors: { other: ["This chatroom doesn't exist"] } },
       status: :unprocessable_entity if !chatroom
 
+    return forbidden_resource if chatroom.owner != current_user && !chatroom.guests.include?(current_user)        
+
     message = Message.new(message_params)
     message.user = current_user; message.chatroom = chatroom
 

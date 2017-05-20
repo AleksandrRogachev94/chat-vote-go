@@ -22,4 +22,20 @@ class Api::V1::ChatroomsController < ApplicationController
 
     render json: chatroom, serializer: ChatroomSerializer, status: :ok
   end
+
+  def create
+    chatroom = Chatroom.new(chatroom_params)
+    chatroom.owner = current_user
+
+    if chatroom.save
+      render json: chatroom, serializer: ChatroomBasicSerializer, status: :created
+    else
+      render json: { errors: chatroom.errors.messages }, status: :unprocessable_entity
+    end
+  end
+
+  private
+    def chatroom_params
+      params.require(:chatroom).permit(:title)
+    end
 end
