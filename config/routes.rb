@@ -6,7 +6,7 @@ Rails.application.routes.draw do
 
       resources :users, only: [:index, :show]
       resources :chatrooms, only: [:index, :show, :create] do
-        
+        resources suggestions:, only: [:create]
         post '/users' => 'user_chatrooms#create'
       end
 
