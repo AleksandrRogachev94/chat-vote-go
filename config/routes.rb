@@ -11,6 +11,7 @@ Rails.application.routes.draw do
       end
 
       # resource :profile, only: [:update]
+      mount ActionCable.server => '/cable'
     end
   end
 end
