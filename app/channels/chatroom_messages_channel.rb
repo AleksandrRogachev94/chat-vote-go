@@ -1,16 +1,12 @@
 class ChatroomMessagesChannel < ApplicationCable::Channel
   def subscribed
-    chatroom = Chatroom.find_by(id: params[:chatroom_id])
-    return if !chatroom ||
-              (chatroom.owner != current_user && !chatroom.guests.include?(current_user))
-
+    chatroom = find_and_authorize_chatroom
     stream_from "chatroom_#{params[:chatroom_id]}:messages"
+    rescue NotAuthorizedError
   end
 
   def receive(payload)
-    chatroom = Chatroom.find_by(id: params[:chatroom_id])
-    return if !chatroom ||
-              (chatroom.owner != current_user && !chatroom.guests.include?(current_user))
+    chatroom = find_and_authorize_chatroom
 
     message = Message.new(user: current_user, chatroom: chatroom,
                    content: payload['message']['content'])
@@ -19,5 +15,7 @@ class ChatroomMessagesChannel < ApplicationCable::Channel
       ActionCable.server.broadcast "chatroom_#{message.chatroom_id}:messages",
         ActiveModelSerializers::SerializableResource.new(message).as_json
     end
+
+    rescue NotAuthorizedError
   end
 end

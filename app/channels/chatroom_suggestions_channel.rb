@@ -1,17 +1,24 @@
 class ChatroomSuggestionsChannel < ApplicationCable::Channel
   def subscribed
-    chatroom = Chatroom.find_by(id: params[:chatroom_id])
-    return if !chatroom ||
-              (chatroom.owner != current_user && !chatroom.guests.include?(current_user))
-
+    chatroom = find_and_authorize_chatroom
     stream_from "chatroom_#{params[:chatroom_id]}:suggestions"
+    rescue NotAuthorizedError
   end
 
   def receive(payload)
-    chatroom = Chatroom.find_by(id: params[:chatroom_id])
-    return if !chatroom ||
-              (chatroom.owner != current_user && !chatroom.guests.include?(current_user))
+    chatroom = find_and_authorize_chatroom
+    suggestion = Suggestion.find_by(id: params[:suggestion_id])
 
+    if chatroom && suggestion # vote
+      handle_vote(chatroom, suggestion)
+    elsif chatroom # create suggustion
+      handle_new_suggestion(chatroom, payload)
+    end
+
+    rescue NotAuthorizedError
+  end
+
+  def handle_new_suggestion(chatroom, payload)
     suggestion = Suggestion.new(user: current_user, chatroom: chatroom,
                    title: payload['suggestion']['title'], description: payload['suggestion']['description'])
 
@@ -19,5 +26,19 @@ class ChatroomSuggestionsChannel < ApplicationCable::Channel
       ActionCable.server.broadcast "chatroom_#{suggestion.chatroom_id}:suggestions",
         ActiveModelSerializers::SerializableResource.new(suggestion).as_json
     end
+  end
+
+  def handle_vote(chatroom, suggestion)
+    return if suggestion.has_evaluation?(:votes, current_user)
+
+    prev = Suggestion.evaluated_by(:votes, current_user).select do |sug|
+      sug.chatroom_id == suggestion.chatroom_id
+    end
+    prev.each { |sug| sug.delete_evaluation(:votes, current_user) }
+
+    suggestion.add_evaluation(:votes, 1, current_user)
+
+    ActionCable.server.broadcast "chatroom_#{suggestion.chatroom_id}:suggestions",
+      ActiveModelSerializers::SerializableResource.new(suggestion).as_json
   end
 end

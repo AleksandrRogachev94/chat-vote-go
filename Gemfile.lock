@@ -38,6 +38,7 @@ GEM
       activemodel (= 5.0.3)
       activesupport (= 5.0.3)
       arel (~> 7.0)
+    activerecord-reputation-system (3.0.1)
     activesupport (5.0.3)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
@@ -149,6 +150,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers (~> 0.10.5)
+  activerecord-reputation-system (~> 3.0.1)
   bcrypt (~> 3.1.7)
   byebug
   foreman (~> 0.82.0)

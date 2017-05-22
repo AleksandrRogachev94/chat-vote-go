@@ -16,6 +16,7 @@ gem 'jwt', '~> 1.5.6'
 gem 'foreman', '~> 0.82.0'
 gem 'active_model_serializers', '~> 0.10.5'
 gem "paperclip", '~> 5.1.0'
+gem 'activerecord-reputation-system', '~> 3.0.1'
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
