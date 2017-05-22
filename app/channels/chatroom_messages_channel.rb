@@ -1,4 +1,4 @@
-class ChatroomChannel < ApplicationCable::Channel
+class ChatroomMessagesChannel < ApplicationCable::Channel
   def subscribed
     chatroom = Chatroom.find_by(id: params[:chatroom_id])
     return if !chatroom ||

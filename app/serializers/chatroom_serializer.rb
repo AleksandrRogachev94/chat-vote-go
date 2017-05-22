@@ -3,4 +3,5 @@ class ChatroomSerializer < ActiveModel::Serializer
   has_many :messages
   belongs_to :owner, serializer: UserBasicSerializer
   has_many :guests, serializer: UserBasicSerializer
+  has_many :suggestions
 end

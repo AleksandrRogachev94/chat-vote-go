@@ -16,6 +16,7 @@ UserChatroom.create(chatroom: Chatroom.first, user: User.all[2])
 
 Message.create(chatroom: Chatroom.first, user: User.all[0], content: "What do you think?")
 Message.create(chatroom: Chatroom.first, user: User.all[1], content: "Sure!")
+Suggestion.create(chatroom: Chatroom.first, user: User.first, title: "Cinema Park")
 
 Chatroom.create(owner: User.all[1], title: "Choosing theater for friday")
 
