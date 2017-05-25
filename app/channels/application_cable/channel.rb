@@ -1,8 +1,9 @@
 module ApplicationCable
-  class NotAuthorizedError < StandardError
-  end
-
   class Channel < ActionCable::Channel::Base
+
+    class NotAuthorizedError < StandardError
+    end
+
     def find_and_authorize_chatroom
       chatroom = Chatroom.find_by(id: params[:chatroom_id])
       if !chatroom ||

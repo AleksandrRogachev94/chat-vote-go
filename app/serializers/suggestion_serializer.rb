@@ -1,7 +1,7 @@
 class SuggestionSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :api_link, :user_id, :chatroom_id, :votes
+  attributes :id, :title, :description, :place_id_google, :user_id, :chatroom_id, :voters
 
-  def votes
-    object.reputation_for(:votes).to_i
+  def voters
+    object.evaluators_for(:votes).pluck(:id)
   end
 end

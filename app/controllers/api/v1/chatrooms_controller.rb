@@ -17,7 +17,7 @@ class Api::V1::ChatroomsController < ApplicationController
     return render json: { errors: { other: ["This chatroom doesn't exist"] } },
       status: :not_found if !chatroom
     if chatroom.owner != current_user && !chatroom.guests.include?(current_user)
-      forbidden_resource
+      return forbidden_resource
     end
 
     render json: chatroom, serializer: ChatroomSerializer, status: :ok

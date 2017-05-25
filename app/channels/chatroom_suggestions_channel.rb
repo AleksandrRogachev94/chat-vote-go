@@ -7,7 +7,7 @@ class ChatroomSuggestionsChannel < ApplicationCable::Channel
 
   def receive(payload)
     chatroom = find_and_authorize_chatroom
-    suggestion = Suggestion.find_by(id: params[:suggestion_id])
+    suggestion = Suggestion.find_by(id: payload['suggestion_id'])
 
     if chatroom && suggestion # vote
       handle_vote(chatroom, suggestion)
@@ -20,11 +20,12 @@ class ChatroomSuggestionsChannel < ApplicationCable::Channel
 
   def handle_new_suggestion(chatroom, payload)
     suggestion = Suggestion.new(user: current_user, chatroom: chatroom,
-                   title: payload['suggestion']['title'], description: payload['suggestion']['description'])
+                   title: payload['suggestion']['title'], description: payload['suggestion']['description'],
+                   place_id_google: payload['suggestion']['place_id_google'])
 
     if suggestion.save
       ActionCable.server.broadcast "chatroom_#{suggestion.chatroom_id}:suggestions",
-        ActiveModelSerializers::SerializableResource.new(suggestion).as_json
+        suggestion: SuggestionSerializer.new(suggestion).as_json
     end
   end
 
@@ -39,6 +40,11 @@ class ChatroomSuggestionsChannel < ApplicationCable::Channel
     suggestion.add_evaluation(:votes, 1, current_user)
 
     ActionCable.server.broadcast "chatroom_#{suggestion.chatroom_id}:suggestions",
-      ActiveModelSerializers::SerializableResource.new(suggestion).as_json
+      suggestion: SuggestionSerializer.new(suggestion).as_json
+
+    prev.each do |suggestion|
+      ActionCable.server.broadcast "chatroom_#{suggestion.chatroom_id}:suggestions",
+        suggestion: SuggestionSerializer.new(suggestion).as_json
+    end
   end
 end

@@ -79,11 +79,11 @@ ActiveRecord::Schema.define(version: 20170522205062) do
   create_table "suggestions", force: :cascade do |t|
     t.string   "title"
     t.string   "description"
-    t.string   "api_link"
+    t.string   "place_id_google"
     t.integer  "user_id"
     t.integer  "chatroom_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.index ["chatroom_id"], name: "index_suggestions_on_chatroom_id", using: :btree
     t.index ["user_id"], name: "index_suggestions_on_user_id", using: :btree
   end

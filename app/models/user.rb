@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_secure_password
 
   has_many :own_chatrooms, class_name: Chatroom, dependent: :destroy
+
   has_many :user_chatrooms
   has_many :guest_chatrooms, through: :user_chatrooms, source: :chatroom
 
