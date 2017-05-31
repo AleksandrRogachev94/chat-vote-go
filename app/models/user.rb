@@ -6,7 +6,7 @@ class User < ApplicationRecord
   has_many :user_chatrooms
   has_many :guest_chatrooms, through: :user_chatrooms, source: :chatroom
 
-  has_attached_file :avatar, default_url: 'https://s3.amazonaws.com/chat-vote-go-dev/users/avatars/default_original.jpg', styles: { thumb: "100x100>" }
+  has_attached_file :avatar, default_url: 'https://s3.amazonaws.com/chat-vote-go-production/users/avatars/default_original.jpg', styles: { thumb: "100x100>" }
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
   validates_with AttachmentSizeValidator, attributes: :avatar, less_than: 2.megabytes
 
