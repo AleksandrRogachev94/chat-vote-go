@@ -1,3 +1,5 @@
+require_dependency 'auth'
+
 class Api::V1::SessionsController < ApplicationController
   def login
     user = User.find_by(email: auth_params[:email])
