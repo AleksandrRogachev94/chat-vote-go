@@ -80,6 +80,4 @@ test:
 #
 production:
   <<: *default
-  database: chat-vote-go_production
-  username: chat-vote-go
-  password: <%= ENV['CHAT-VOTE-GO_DATABASE_PASSWORD'] %>
+  url: <%= ENV['DATABASE_URL'] %>
