@@ -19,6 +19,7 @@ gem "paperclip", '~> 5.1.0'
 gem 'aws-sdk', '~> 2.9', '>= 2.9.7'
 gem 'figaro'
 gem 'activerecord-reputation-system', '~> 3.0.1'
+gem 'rack-cors', :require => 'rack/cors'
 # Use Redis adapter to run Action Cable in production
 gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
