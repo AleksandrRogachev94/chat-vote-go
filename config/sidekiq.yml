@@ -1,7 +1,9 @@
 development:
   :concurrency: 5
 production:
-  :concurrency: 6
+  :concurrency: 4 # 8 - 2 for sidekiq internals - 2 for ActionCable (?)
 :queues:
-  - paperclip
+  - [paperclip, 1]
+  - [messages, 2]
+  - [suggestions, 2]
   - default
