@@ -10,6 +10,8 @@ class User < ApplicationRecord
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
   validates_with AttachmentSizeValidator, attributes: :avatar, less_than: 2.megabytes
 
+  process_in_background :avatar
+
   before_save :capitalize_name
 
   validates :email, :nickname, presence: true, uniqueness: true

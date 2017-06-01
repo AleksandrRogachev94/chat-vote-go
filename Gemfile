@@ -15,12 +15,13 @@ gem 'puma', '~> 3.0'
 gem 'jwt', '~> 1.5.6'
 gem 'foreman', '~> 0.82.0'
 gem 'active_model_serializers', '~> 0.10.5'
-gem "paperclip", '~> 5.1.0'
+gem 'delayed_paperclip', '~> 3.0', '>= 3.0.1'
 gem 'aws-sdk', '~> 2.9', '>= 2.9.7'
 gem 'figaro'
 gem 'activerecord-reputation-system', '~> 3.0.1'
 gem 'rack-cors', :require => 'rack/cors'
-# Use Redis adapter to run Action Cable in production
+gem 'sidekiq', '~> 4.1', '>= 4.1.2'
+# Use Redis adapter to run Action Cable And Paperclip in production
 gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
