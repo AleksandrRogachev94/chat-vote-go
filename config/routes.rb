@@ -9,6 +9,8 @@ Rails.application.routes.draw do
         post '/users' => 'user_chatrooms#create'
       end
 
+      resources :suggestions, only: [:destroy]
+
       # resource :profile, only: [:update]
       mount ActionCable.server => '/cable'
     end

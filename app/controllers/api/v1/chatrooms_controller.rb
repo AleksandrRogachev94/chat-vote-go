@@ -1,5 +1,6 @@
 class Api::V1::ChatroomsController < ApplicationController
   before_action :authenticate!
+  before_action :set_chatroom, only: [:show]
 
   def index
     case params[:type]
@@ -13,14 +14,7 @@ class Api::V1::ChatroomsController < ApplicationController
   end
 
   def show
-    chatroom = Chatroom.find_by(id: params[:id])
-    return render json: { errors: { other: ["This chatroom doesn't exist"] } },
-      status: :not_found if !chatroom
-    if chatroom.owner != current_user && !chatroom.guests.include?(current_user)
-      return forbidden_resource
-    end
-
-    render json: chatroom, serializer: ChatroomSerializer, status: :ok
+    render json: @chatroom, serializer: ChatroomSerializer, status: :ok
   end
 
   def create
@@ -37,5 +31,12 @@ class Api::V1::ChatroomsController < ApplicationController
   private
     def chatroom_params
       params.require(:chatroom).permit(:title)
+    end
+
+    def set_chatroom
+      @chatroom = Chatroom.find_by(id: params[:id])
+      return render json: { errors: { other: ["This chatroom doesn't exist"] } },
+        status: :not_found if !@chatroom
+      return forbidden_resource if @chatroom.owner != current_user && !@chatroom.guests.include?(current_user)
     end
 end
