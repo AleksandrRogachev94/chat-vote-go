@@ -14,7 +14,7 @@ class User < ApplicationRecord
 
   before_save :capitalize_name
 
-  validates :email, :nickname, presence: true, uniqueness: true
+  validates :email, :nickname, presence: true, :uniqueness => {:case_sensitive => false}
 
   def capitalize_name
     self.first_name.capitalize! if self.first_name
