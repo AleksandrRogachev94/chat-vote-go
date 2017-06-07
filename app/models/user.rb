@@ -3,7 +3,7 @@ class User < ApplicationRecord
 
   has_many :own_chatrooms, class_name: Chatroom, dependent: :destroy
 
-  has_many :user_chatrooms
+  has_many :user_chatrooms, dependent: :destroy
   has_many :guest_chatrooms, through: :user_chatrooms, source: :chatroom
 
   has_attached_file :avatar, default_url: 'https://s3.amazonaws.com/chat-vote-go-production/users/avatars/default_original.jpg', styles: { thumb: "100x100>" }

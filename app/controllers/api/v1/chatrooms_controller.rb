@@ -1,6 +1,6 @@
 class Api::V1::ChatroomsController < ApplicationController
   before_action :authenticate!
-  before_action :set_chatroom, only: [:show]
+  before_action :set_chatroom, only: [:show, :destroy]
 
   def index
     case params[:type]
@@ -26,6 +26,12 @@ class Api::V1::ChatroomsController < ApplicationController
     else
       render json: { errors: chatroom.errors.messages }, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    return forbidden_resource if @chatroom.owner != current_user
+    @chatroom.destroy
+    render json: @chatroom, serializer: ChatroomBasicSerializer, status: :ok
   end
 
   private

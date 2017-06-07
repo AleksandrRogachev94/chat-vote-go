@@ -5,7 +5,7 @@ Rails.application.routes.draw do
       post '/login' => 'sessions#login'
 
       resources :users, only: [:index, :show, :update]
-      resources :chatrooms, only: [:index, :show, :create] do
+      resources :chatrooms, only: [:index, :show, :create, :destroy] do
       end
 
       mount ActionCable.server => '/cable'
