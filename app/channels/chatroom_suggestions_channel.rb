@@ -3,6 +3,7 @@ class ChatroomSuggestionsChannel < ApplicationCable::Channel
     chatroom = find_and_authorize_chatroom
     stream_from "chatroom_#{params[:chatroom_id]}:suggestions"
     rescue NotAuthorizedError
+      reject
   end
 
   def receive(payload)

@@ -6,4 +6,5 @@ production:
   - [paperclip, 1]
   - [messages, 2]
   - [suggestions, 2]
+  - [users, 2]
   - default

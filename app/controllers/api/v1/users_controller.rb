@@ -1,7 +1,7 @@
 require_dependency 'auth'
 
 class Api::V1::UsersController < ApplicationController
-  before_action :authenticate!, only: [:index, :show]
+  before_action :authenticate!, only: [:index, :show, :update]
 
   def signup
     user = User.new(user_params)

@@ -3,7 +3,7 @@ class Api::V1::SuggestionsController < ApplicationController
   before_action :set_suggestion, only: [:destroy]
 
   def destroy
-    @suggestion.delete
+    @suggestion.destroy
     render json: @suggestion, status: :ok
   end
 
