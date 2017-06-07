@@ -35,4 +35,14 @@ class ChatroomSuggestionsChannel < ApplicationCable::Channel
 
     suggestion.add_evaluation_with_broadcasting(:votes, 1, current_user)
   end
+
+  def remove(payload)
+    chatroom = find_and_authorize_chatroom
+    return if chatroom.owner != current_user
+
+    suggestion = Suggestion.find_by(id: payload['suggestion_id'])
+    return if !suggestion || !chatroom.suggestions.include?(suggestion)
+    suggestion.destroy
+    rescue NotAuthorizedError
+  end
 end

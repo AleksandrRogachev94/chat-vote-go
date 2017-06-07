@@ -5,7 +5,7 @@ class Suggestion < ApplicationRecord
   has_reputation :votes, source: :user, aggregated_by: :sum
 
   after_create_commit { SuggestionBroadcastJob.perform_later self }
-  # after_update_commit { SuggestionBroadcastJob.perform_later self }
+  after_destroy_commit { SuggestionRemoveBroadcastJob.perform_later ActiveModelSerializers::SerializableResource.new(self).as_json }
 
   validates :title, presence: true
 

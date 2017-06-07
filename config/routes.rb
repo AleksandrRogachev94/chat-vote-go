@@ -6,11 +6,7 @@ Rails.application.routes.draw do
 
       resources :users, only: [:index, :show, :update]
       resources :chatrooms, only: [:index, :show, :create] do
-        post '/users' => 'user_chatrooms#create'
-        delete '/users/:id' => 'user_chatrooms#destroy'
       end
-
-      resources :suggestions, only: [:destroy]
 
       mount ActionCable.server => '/cable'
     end
