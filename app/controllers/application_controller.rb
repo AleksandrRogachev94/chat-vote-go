@@ -40,7 +40,7 @@ class ApplicationController < ActionController::API
     end
 
     def authentication_timeout
-      render json: { errors: { auth: ['Authentication Timeout'] } }, status: :anauthorized
+      render json: { errors: { auth: ['Authentication Timeout'] } }, status: :unauthorized
     end
     def forbidden_resource
       render json: { errors: { auth: ['Not Authorized To Access Resource'] } }, status: :forbidden
